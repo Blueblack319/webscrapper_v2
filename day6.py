@@ -35,12 +35,19 @@ def show_list():
     return countries
 
 def search(countries):
-    index = int(input("#: "))
-    name = list(countries[index])[0]
-    currency = countries[index].get(name)
-    print(name)
-    return currency
-
+    try:
+        selection = int(input("#: "))
+        if selection > len(countries) or selection < 0:
+            print("Choose a number from the list.")
+            return search(countries)
+        else:
+            name = list(countries[selection])[0]
+            currency = countries[selection].get(name)
+            print(name)
+            return currency
+    except ValueError:
+        print("That wasn't a number.")
+        return search(countries)
 
 def ask_from(countries):
     print("Where are you from? Choose a country by number.\n")
@@ -49,7 +56,8 @@ def ask_from(countries):
 
 def ask_to(countries):
     print("Now choose another country.\n")
-    return search(countries)
+    code = search(countries)
+    return code
 
 def ask_amount(currency_from, currency_to):
     try:
@@ -80,7 +88,6 @@ def main():
     countries = show_list()
     code_from = ask_from(countries)
     code_to = ask_to(countries)
-    print(code_from, code_to)
     source = ask_amount(code_from, code_to)
     convert(code_from, code_to, source)
 
