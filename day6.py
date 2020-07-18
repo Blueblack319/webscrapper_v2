@@ -43,7 +43,7 @@ def search(countries):
         else:
             name = list(countries[selection])[0]
             currency = countries[selection].get(name)
-            print(name)
+            print(name, "\n")
             return currency
     except ValueError:
         print("That wasn't a number.")
