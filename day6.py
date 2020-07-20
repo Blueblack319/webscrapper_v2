@@ -10,7 +10,7 @@ Use the 'format_currency' function to format the output of the conversion
 format_currency(AMOUNT, CURRENCY_CODE, locale="ko_KR" (no need to change this one))
 """
 
-# main, ask_from, ask_to, ask_money, convert
+# Complement : enumerate(), result = currency_soup.find("input", {"id":"cc-amount-to"})
 def show_list():
     url = "https://www.iban.com/currency-codes"
     req = requests.get(url)
@@ -75,13 +75,13 @@ def convert(code_from, code_to, source):
         soup = BeautifulSoup(page, "html.parser")
 
         rate = float(soup.select_one("input#rate")["value"])
-        target = source*rate
+        target = source * rate
         amount_source = format_currency(source, code_from, locale="ko_KR")
         amount_converted = format_currency(target, code_to, locale="ko_KR")
 
         print(f"{amount_source} is {amount_converted}")
 
-    except:
+    except ValueError:
         print("Such coutries are not in transferwise...Sorry")
 
 def main():
