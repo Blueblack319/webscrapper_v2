@@ -1,5 +1,4 @@
 import requests
-import html
 from flask import Flask, render_template, request
 
 base_url = "http://hn.algolia.com/api/v1"
@@ -84,16 +83,20 @@ def detail(id):
         author = textDetail["author"]
         url = textDetail["url"]
         article = {"title": title, "points": points, "author": author, "url": url}
+        comments.append({"article": article})
         # author, text in children
         for infoDetail in infoDetails:
             if infoDetail["author"] is None:
                 comment = {}
             else:
                 author = infoDetail["author"]
-                text = html.unescape(infoDetail["text"])
+                text = infoDetail["text"]
                 comment = {"author": author, "text": text}
             comments.append(comment)
         commentsDb[id] = comments
+
+    article = comments[0]["article"]
+    comments = comments[1:]
 
     return render_template("detail.html", comments=comments, article=article)
 
