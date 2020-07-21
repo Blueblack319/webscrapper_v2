@@ -36,12 +36,10 @@ def extract_info(list):
         points = info["points"]
         author = info["author"]
         comments = info["num_comments"]
-        article = {"title": title, "url": url, "points": points, "author": author, "comments": comments}
+        objectID = info["objectID"]
+        article = {"title": title, "url": url, "points": points, "author": author, "comments": comments, "objectID": objectID}
         articles.append(article)
     return articles
-
-
-order_by_new = extract_info(info_new)
 
 db = {}
 app = Flask("DayNine")

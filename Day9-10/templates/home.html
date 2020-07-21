@@ -27,7 +27,18 @@
         </div>
         <main>
             {% for article in articles %}
-
+            <div>
+                <div>
+                    <a href=f"/{{article.objectID}}">
+                        <h3>{{article.title}}</h3>
+                    </a>
+                    (
+                    <a href="{{article.url}}" target="_blank">{{article.url}}</a>
+                    )
+                </div>
+                <div>{{article.points}} points | By: {{article.author}} | {{article.comments}} comments</div>
+            </div>
+            <hr>
             {% endfor %}
         </main>
     </header>
