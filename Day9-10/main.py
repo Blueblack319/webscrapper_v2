@@ -1,4 +1,5 @@
 import requests
+import html
 from flask import Flask, render_template, request
 
 base_url = "http://hn.algolia.com/api/v1"
@@ -25,7 +26,6 @@ text_new = req_new.json()
 info_pop = text_pop['hits']
 info_new = text_new["hits"]
 
-
 # title, url, points, author, comments
 
 def extract_info(list):
@@ -42,28 +42,59 @@ def extract_info(list):
     return articles
 
 db = {}
+commentsDb = {}
 app = Flask("DayNine")
 
 
 @app.route("/", methods=["GET", "POST"])
 def home():
-  order_by = request.args.get("order_by") or "popular"
-  if order_by == "new":
+  orderBy = request.args.get("order_by") or "popular"
+  if orderBy == "new":
     fromDb = db.get("new")
     if fromDb:
       articles = fromDb
     else:
       articles = extract_info(info_new)
       db["new"] = articles
-    return render_template("home.html", articles=articles, order_by=order_by)
-  elif order_by == None or "popular":
+    return render_template("home.html", articles=articles, order_by=orderBy)
+  elif orderBy == None or "popular":
     fromDb = db.get("pop")
     if fromDb:
         articles = fromDb
     else:
         articles = extract_info(info_pop)
         db["pop"] = articles
-    return render_template("home.html", articles=articles, order_by=order_by)
+    return render_template("home.html", articles=articles, order_by=orderBy)
 
+@app.route("/<id>")
+def detail(id):
+
+    fromDb = commentsDb.get(id)
+    if fromDb:
+        comments = fromDb
+    else:
+        comments = []
+        urlDetail = make_detail_url(id)
+        req = requests.get(urlDetail)
+        textDetail = req.json()
+        infoDetails = textDetail["children"]
+        # title, points, author, url
+        title = textDetail["title"]
+        points = textDetail["points"]
+        author = textDetail["author"]
+        url = textDetail["url"]
+        article = {"title": title, "points": points, "author": author, "url": url}
+        # author, text in children
+        for infoDetail in infoDetails:
+            if infoDetail["author"] is None:
+                comment = {}
+            else:
+                author = infoDetail["author"]
+                text = html.unescape(infoDetail["text"])
+                comment = {"author": author, "text": text}
+            comments.append(comment)
+        commentsDb[id] = comments
+
+    return render_template("detail.html", comments=comments, article=article)
 
 app.run(host="localhost")
