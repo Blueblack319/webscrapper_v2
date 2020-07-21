@@ -45,7 +45,7 @@ commentsDb = {}
 app = Flask("DayNine")
 
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/")
 def home():
   orderBy = request.args.get("order_by") or "popular"
   if orderBy == "new":
