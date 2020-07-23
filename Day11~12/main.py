@@ -1,7 +1,7 @@
 # create index.html
 # create scrapper -> select, scrapper
 # make fakeDb
-# create reading.html
+# create read.html
 from typing import Dict, Any
 
 from flask import Flask, render_template, request
@@ -19,25 +19,22 @@ subreddits = [
     "rust",
     "django"
 ]
-
 db = {}
-print(db)
+
 @app.route("/")
 def index():
     return render_template("index.html", subreddits=subreddits)
 
 @app.route("/read", methods=["GET"])
-def reading():
+def read():
+    global db
     selected = []
     for subreddit in subreddits:
         check = request.args.get(subreddit)
         if check == "on":
             selected.append(subreddit)
     newDb = get_articles(selected, db)
-    print(newDb)
-    db = db.update(newDb)
-
-
-    return render_template("read.html", db=db)
+    db.update(newDb)
+    return render_template("read.html", db=newDb, subreddits=selected)
 
 app.run(host="localhost", port=5001)

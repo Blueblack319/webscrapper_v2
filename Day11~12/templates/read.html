@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://andybrewer.github.io/mvp/mvp.css" rel="stylesheet">
+    <title>Reddit Reader</title>
+</head>
+<body>
+    <header>
+        <h1>
+            <a href="/">Reddit Reader</a>
+        </h1>
+        <h3>
+            Reading:
+            {% for subreddit in subreddits %}
+                r/{{subreddit}}
+            {% endfor %}
+        </h3>
+    </header>
+    <main>
+        {% for subreddit in subreddits %}
+            {% for article in db[subreddit]%}
+                <h3>
+                    <a href={{article["url"]}} target="_blank">
+                        {{article["title"]}}
+                    </a>
+                </h3>
+                <h4>{{article[upvotes]}} upvotes · r/{{subreddit}}</h4>
+                <hr>
+            {% endfor%}
+        {% endfor %}
+    </main>
+</body>
+</html>

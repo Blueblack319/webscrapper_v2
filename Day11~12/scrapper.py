@@ -6,7 +6,7 @@ def get_articles(subreddits, db):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'}
     for subreddit in subreddits:
-        fromDb = db.get(subreddit)
+        fromDb = db.get(subreddit) or "Nothing"
         if fromDb:
             articles = fromDb
         else:
@@ -25,6 +25,7 @@ def get_articles(subreddits, db):
                 title = item.find("article", {"class": "yn9v_hQEhjlRNZI0xspbA"}).find("div", {"class": "_2wImphGg_1LcEF5MiErvRx"}).find("a").find("div", {"class": "_2SdHzo12ISmrC8H86TgSCp"}).find("h3", {"class": "_eYtD2XCVieq6emjKBH3m"}).text
                 article = {"upvotes": upvotes, "url": url, "title": title}
                 articles.append(article)
+
         newDb[subreddit] = articles
-        return newDb
+    return newDb
 
