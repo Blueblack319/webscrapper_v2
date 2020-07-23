@@ -100,4 +100,4 @@ def detail(id):
 
     return render_template("detail.html", comments=comments, article=article)
 
-app.run(host="localhost")
+app.run(host="localhost", port=5002)
