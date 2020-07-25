@@ -2,8 +2,6 @@
 # create scrapper -> select, scrapper
 # make fakeDb
 # create read.html
-from typing import Dict, Any
-
 from flask import Flask, render_template, request
 from scrapper import get_articles
 app = Flask("DayEleven")
