@@ -46,7 +46,7 @@ def export():
         if not jobs:
             raise Exception
         save_to_file(term, jobs)
-        return send_file(f"remote_{term}_jobs.csv")
+        return send_file(f"downloaded_file/remote_{term}_jobs.csv")
     except:
         return "lalalalal"
 app.run(host="localhost", port=5005)
